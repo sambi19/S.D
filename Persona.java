@@ -1,42 +1,34 @@
-public class Persona implements Comparable<Persona>
-    {
-        private int edad;
-        private String nombre;
+import java.util.Arrays;
+import java.util.Comparator;
 
-        public Persona(int edad, String nombre)
-        {
-            this.edad = edad;
-            this.nombre = nombre;
-        }
+public class Persona {
+    private String nombre;
 
-        public String getNombre()
-        {
-            return nombre;
-        }
+    public Persona(String nombre) {
+        this.nombre = nombre;
+    }
 
-        public int getEdad()
-        {
-            return edad;
-        }
+    public String getNombre() {
+        return nombre;
+    }
 
-        //Modificar para que compare por nombre:
-        @Override
-        public int compareTo(Persona o) {
-            if(this.getEdad() < o.getEdad())
-                return 1;
-            else 
-            {
-                if(this.getEdad() > o.getEdad())
-                {
-                    return -1;
-                }
-                else{
-                    return 0;
-                }
+    public static void main(String[] args) {
+        Persona[] personas = {
+            new Persona("Carlos"),
+            new Persona("Ana"),
+            new Persona("Beatriz"),
+            new Persona("David")
+        };
+
+        Arrays.sort(personas, new Comparator<Persona>() {
+            @Override
+            public int compare(Persona p1, Persona p2) {
+                return p1.getNombre().compareTo(p2.getNombre());
             }
+        });
+
+        for (Persona persona : personas) {
+            System.out.println(persona.getNombre());
         }
-
-
-
-
-    } 
+    }
+}
