@@ -29,31 +29,46 @@ class ComparadorPorPromedio implements Comparator<Estudiante> {
     }
 }
 
-public class Main {
+public class MainBinarySearch {
     public static void main(String[] args) {
-        // (b) Crear un arreglo de 100 estudiantes
-        Estudiante[] estudiantes = new Estudiante[100];
-        Random rand = new Random();
-        for (int i = 0; i < 100; i++) {
-            estudiantes[i] = new Estudiante("ID" + i, "Estudiante" + i, rand.nextFloat() * 10);
-        }
-        
+        // Crear un arreglo de 100 estudiantes con datos aleatorios
+        Estudiante[] estudiantes = generarEstudiantes(100);
+
         // Ordenar el arreglo por promedio acumulado
         Arrays.sort(estudiantes);
 
-        // (c) Búsqueda binaria iterativa
+        // Mostrar los estudiantes ordenados
+        System.out.println("Estudiantes ordenados por promedio acumulado:");
+        for (Estudiante e : estudiantes) {
+            System.out.println(e);
+        }
+
+        // Búsqueda binaria iterativa
         float notaBuscada = 5.0f;
         int indexIterativo = busquedaBinariaIterativa(estudiantes, notaBuscada);
-        System.out.println("Iterativa: " + (indexIterativo != -1 ? estudiantes[indexIterativo] : "No encontrado"));
+        mostrarResultadoBusqueda("Iterativa", estudiantes, indexIterativo);
 
-        // (c) Búsqueda binaria recursiva
+        // Búsqueda binaria recursiva
         int indexRecursivo = busquedaBinariaRecursiva(estudiantes, notaBuscada, 0, estudiantes.length - 1);
-        System.out.println("Recursiva: " + (indexRecursivo != -1 ? estudiantes[indexRecursivo] : "No encontrado"));
+        mostrarResultadoBusqueda("Recursiva", estudiantes, indexRecursivo);
 
-        // (d) Contar estudiantes con promedio mayor a cierta nota
+        // Contar estudiantes con promedio mayor a cierta nota
         float notaReferencia = 6.0f;
         int count = contarEstudiantesMayorQue(estudiantes, notaReferencia);
         System.out.println("Estudiantes con promedio mayor a " + notaReferencia + ": " + count);
+    }
+
+    private static Estudiante[] generarEstudiantes(int cantidad) {
+        Estudiante[] estudiantes = new Estudiante[cantidad];
+        Random rand = new Random();
+        for (int i = 0; i < cantidad; i++) {
+            estudiantes[i] = new Estudiante("ID" + i, "Estudiante" + i, rand.nextFloat() * 10);
+        }
+        return estudiantes;
+    }
+
+    private static void mostrarResultadoBusqueda(String metodo, Estudiante[] estudiantes, int index) {
+        System.out.println(metodo + ": " + (index != -1 ? estudiantes[index] : "No encontrado"));
     }
 
     public static int busquedaBinariaIterativa(Estudiante[] arr, float clave) {
@@ -76,10 +91,6 @@ public class Main {
     }
 
     public static int contarEstudiantesMayorQue(Estudiante[] arr, float nota) {
-        int count = 0;
-        for (Estudiante e : arr) {
-            if (e.promAcum > nota) count++;
-        }
-        return count;
+        return (int) Arrays.stream(arr).filter(e -> e.promAcum > nota).count();
     }
 }
